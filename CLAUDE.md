@@ -43,7 +43,8 @@ ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kuralla
 
 4. **PR aç:** Hedef branch **her zaman `dev`**. Başlık ve açıklama net olsun.
 
-5. **Review & Merge:** En az **1 onay** sonrası **Squash & Merge** ile birleştir.
+5. **Review & Merge:** En az **1 onay** sonrası repo sorumlusu **Squash & Merge** ile birleştirir.
+   - Repoda yalnızca **Squash & Merge** açıktır (merge commit ve rebase merge kapalı).
    - Merge sonrasında feature branch **otomatik silinir** — elle silmek gerekmez.
 
 6. **`main`'e çıkış:** `main`'e sadece `dev`'den açılan bir PR ile (release anında) çıkılır.
@@ -61,7 +62,7 @@ ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kuralla
 
 - `main` veya `dev`'i silmek, force-push etmek, doğrudan commit/push atmak.
 - `dev` güncellenmeden (rebase edilmeden) merge etmek.
-- Merge commit oluşturan merge (sadece rebase veya squash'a izin var).
+- PR'da merge commit veya rebase merge kullanmak (repo yalnızca Squash & Merge'e izin verir).
 - Branch koruma kurallarını bypass etmeye çalışmak.
 
 ## Yardımcı İpuçları
