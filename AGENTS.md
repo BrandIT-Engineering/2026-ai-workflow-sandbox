@@ -1,7 +1,8 @@
 # BrandIT Engineering — AI Agent Workflow
 
 Bu dosya, bu repoda çalışan tüm AI agent'lar (Claude Code, Codex, OpenCode, Cursor, vb.) ve
-ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kurallara uymak zorunludur.
+ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. `CLAUDE.md` yalnızca
+bu dosyaya referans verir. Kurallara uymak zorunludur.
 
 ## Branch Yapısı
 
