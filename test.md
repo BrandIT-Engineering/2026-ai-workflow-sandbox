@@ -3,3 +3,10 @@ Bu bir test dosyasıdır.
 Üçüncü satır.
 Dördüncü satır.
 Bu yazı m_berber'e aittir (m_berber).
+
+# Test Dosyası
+
+Bu dosya dev branch üzerinde test amacıyla oluşturulmuştur.
+İçeriği örnek metin satırlarından oluşmaktadır.
+Bu dosya AI coding workflow sandbox projesine aittir.
+EmreTok tarafından oluşturuldu.
