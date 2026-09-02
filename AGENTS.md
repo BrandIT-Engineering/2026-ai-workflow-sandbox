@@ -1,7 +1,22 @@
 # BrandIT Engineering — AI Agent Workflow
 
 Bu dosya, bu repoda çalışan tüm AI agent'lar (Claude Code, Codex, OpenCode, Cursor, vb.) ve
-ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kurallara uymak zorunludur.
+ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. `CLAUDE.md` yalnızca
+bu dosyaya referans verir. Kurallara uymak zorunludur.
+
+## Agent Skills
+
+Proje skill'leri `.cursor/skills/` altındadır. Her oturumda önce `using-skills` skill'ini oku.
+
+| Skill | Ne zaman |
+|-------|----------|
+| `using-skills` | Her oturumun başında |
+| `git-workflow` | Branch, commit, rebase, push, PR |
+| `brainstorming` | Yeni özellik veya davranış değişikliği öncesi |
+| `systematic-debugging` | Bug, test hatası, beklenmeyen davranış |
+| `verification-before-completion` | "Bitti" demeden önce |
+| `test-driven-development` | Test ile geliştirme |
+| `writing-plans` | Çok adımlı / mimari işler |
 
 ## Branch Yapısı
 
@@ -43,7 +58,8 @@ ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kuralla
 
 4. **PR aç:** Hedef branch **her zaman `dev`**. Başlık ve açıklama net olsun.
 
-5. **Review & Merge:** En az **1 onay** sonrası **Squash & Merge** ile birleştir.
+5. **Review & Merge:** En az **1 onay** sonrası repo sorumlusu **Squash & Merge** ile birleştirir.
+   - Repoda yalnızca **Squash & Merge** açıktır (merge commit ve rebase merge kapalı).
    - Merge sonrasında feature branch **otomatik silinir** — elle silmek gerekmez.
 
 6. **`main`'e çıkış:** `main`'e sadece `dev`'den açılan bir PR ile (release anında) çıkılır.
@@ -61,7 +77,7 @@ ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kuralla
 
 - `main` veya `dev`'i silmek, force-push etmek, doğrudan commit/push atmak.
 - `dev` güncellenmeden (rebase edilmeden) merge etmek.
-- Merge commit oluşturan merge (sadece rebase veya squash'a izin var).
+- PR'da merge commit veya rebase merge kullanmak (repo yalnızca Squash & Merge'e izin verir).
 - Branch koruma kurallarını bypass etmeye çalışmak.
 
 ## Yardımcı İpuçları
