@@ -40,4 +40,14 @@ staged=$(printf '%s\n' "$porcelain" | grep -c '^[MADRC]')
 modified=$(printf '%s\n' "$porcelain" | grep -c '^.[MD]')
 untracked=$(printf '%s\n' "$porcelain" | grep -c '^??')
 
-printf '%s | 📁 %s | %s | +%s ~%s ?%s\n' "$label" "$folder" "$model" "$staged" "$modified" "$untracked"
+# Yerelde önbelleğe alınmış origin/dev'e göre bayatlık — ağ çağrısı yok,
+# yalnızca son 'git fetch' ne zaman yapıldıysa onu yansıtır.
+behind=$(git -C "$dir" rev-list --count HEAD..origin/dev 2>/dev/null)
+[ -n "$behind" ] || behind=0
+if [ "$behind" -gt 0 ] 2>/dev/null; then
+  stale=" | ⚠ dev'den $behind geride"
+else
+  stale=""
+fi
+
+printf '%s | 📁 %s | %s | +%s ~%s ?%s%s\n' "$label" "$folder" "$model" "$staged" "$modified" "$untracked" "$stale"
