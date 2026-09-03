@@ -1,0 +1,21 @@
+#!/bin/sh
+protected="refs/heads/main refs/heads/dev"
+
+while read local_ref local_sha remote_ref remote_sha
+do
+  for p in $protected; do
+    if [ "$remote_ref" = "$p" ]; then
+      echo "'$remote_ref'e doğrudan push yasak. Değişikliği PR ile 'dev'e gönder." >&2
+      exit 1
+    fi
+  done
+done
+
+git fetch -q origin dev 2>/dev/null
+behind=$(git rev-list --count HEAD..origin/dev 2>/dev/null)
+[ -n "$behind" ] || behind=0
+if [ "$behind" -gt 0 ] 2>/dev/null; then
+  echo "Uyarı: origin/dev $behind commit ilerde, 'git sync' çalıştır." >&2
+fi
+
+exit 0
