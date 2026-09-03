@@ -1,0 +1,10 @@
+# Kritik yollar — bu yollara dokunan PR'larda @m_berber onayı zorunludur.
+/.github/      @m_berber
+/.githooks/    @m_berber
+/.claude/      @m_berber
+/AGENTS.md     @m_berber
+/CLAUDE.md     @m_berber
+/scripts/      @m_berber
+
+# Bunun dışındaki her şey için owner tanımlı değil — çapraz review
+# (@e_tok <-> @h_gulek) yeterli. Bkz. docs/review-akisi.md
