@@ -1,0 +1,13 @@
+name: pr-gate
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  pr-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo ok
