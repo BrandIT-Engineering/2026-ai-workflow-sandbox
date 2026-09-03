@@ -65,6 +65,35 @@ ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kuralla
 - PR'da merge commit veya rebase merge kullanmak (repo yalnızca Squash & Merge'e izin verir).
 - Branch koruma kurallarını bypass etmeye çalışmak.
 
+## Zorlama Katmanları
+
+Bu kurallardan hangisi **otomatik engelleniyor**, hangisi **sadece konvansiyon** —
+ikincisi agent'ın kendi kendini kontrol etmesine bağlı, bilmek önemli.
+
+**Hook ile zorlanan (deterministik engel):**
+- `main`/`dev`'e doğrudan commit → `.githooks/pre-commit`
+- `main`/`dev`'e push → `.githooks/pre-push`
+- Conventional Commits dışı commit mesajı → `.githooks/commit-msg`
+- `rm -rf`, `git reset --hard`, `git checkout main|dev`, `git config --global`,
+  force-push (`--force-with-lease` hariç) → `.claude/hooks/block-dangerous.sh`
+  (PreToolUse, Bash matcher)
+- `.env`, `.git/`, `.githooks/`, `package-lock.json`, `go.sum` dosyalarına
+  Edit/Write; `test.md`'ye Write (yalnızca Edit/append izinli) →
+  `.claude/hooks/protect-files.sh` (PreToolUse, Edit|Write matcher)
+
+**Yalnızca konvansiyon (hook yok, agent'ın kurala uyması gerekiyor):**
+- Rebase edilmeden merge etmeme
+- PR'da yalnızca Squash & Merge kullanma
+- `main`'e sadece `dev`'den PR ile çıkma
+- Anlamlı, küçük commit'ler yapma
+
+**Önemli:** `.claude/hooks/*` katmanı bazı Claude Code sürümlerinde Bash tool
+çağrılarını güvenilir şekilde yakalamayabilir (bilinen sınırlama). Asıl duvar
+`.githooks/`'tur — git'in kendisi tarafından çalıştırılır, hangi araçla
+(Claude Code, Codex, OpenCode, düz terminal) commit/push yapıldığından
+bağımsızdır. `.claude/hooks/*` sadece **erken geri bildirim** sağlar, tek
+güvence değildir.
+
 ## Yardımcı İpuçları
 
 - `git status` her adımda temiz olmalı; yapılmayan iş bırakma.
