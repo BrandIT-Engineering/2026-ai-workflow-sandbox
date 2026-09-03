@@ -18,4 +18,18 @@ git config --global alias.wl "worktree list"
 echo "pull.rebase=true ayarlanıyor (pull her zaman rebase yapsın, merge commit üretmesin)..."
 git config --global pull.rebase true
 
+echo "Claude Code statusLine kuruluyor (~/.claude/statusline.sh)..."
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+mkdir -p "$HOME/.claude"
+cp "$script_dir/statusline.sh" "$HOME/.claude/statusline.sh"
+chmod +x "$HOME/.claude/statusline.sh"
+
+settings="$HOME/.claude/settings.json"
+if [ -f "$settings" ]; then
+  tmp=$(mktemp)
+  jq '.statusLine = {"type": "command", "command": "~/.claude/statusline.sh"}' "$settings" > "$tmp" && mv "$tmp" "$settings"
+else
+  printf '{\n  "statusLine": {"type": "command", "command": "~/.claude/statusline.sh"}\n}\n' > "$settings"
+fi
+
 echo "Bitti. Yeni bir iş için: git start <kisa-isim>"
