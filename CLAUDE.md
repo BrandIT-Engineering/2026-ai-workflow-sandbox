@@ -43,7 +43,8 @@ ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kuralla
 
 4. **PR aç:** Hedef branch **her zaman `dev`**. Başlık ve açıklama net olsun.
 
-5. **Review & Merge:** En az **1 onay** sonrası **Squash & Merge** ile birleştir.
+5. **Review & Merge:** En az **1 onay** sonrası repo sorumlusu **Squash & Merge** ile birleştirir.
+   - Repoda yalnızca **Squash & Merge** açıktır (merge commit ve rebase merge kapalı).
    - Merge sonrasında feature branch **otomatik silinir** — elle silmek gerekmez.
 
 6. **`main`'e çıkış:** `main`'e sadece `dev`'den açılan bir PR ile (release anında) çıkılır.
@@ -61,8 +62,37 @@ ekip üyeleri için **tek kaynak** branch ve merge workflow kuralıdır. Kuralla
 
 - `main` veya `dev`'i silmek, force-push etmek, doğrudan commit/push atmak.
 - `dev` güncellenmeden (rebase edilmeden) merge etmek.
-- Merge commit oluşturan merge (sadece rebase veya squash'a izin var).
+- PR'da merge commit veya rebase merge kullanmak (repo yalnızca Squash & Merge'e izin verir).
 - Branch koruma kurallarını bypass etmeye çalışmak.
+
+## Zorlama Katmanları
+
+Bu kurallardan hangisi **otomatik engelleniyor**, hangisi **sadece konvansiyon** —
+ikincisi agent'ın kendi kendini kontrol etmesine bağlı, bilmek önemli.
+
+**Hook ile zorlanan (deterministik engel):**
+- `main`/`dev`'e doğrudan commit → `.githooks/pre-commit`
+- `main`/`dev`'e push → `.githooks/pre-push`
+- Conventional Commits dışı commit mesajı → `.githooks/commit-msg`
+- `rm -rf`, `git reset --hard`, `git checkout main|dev`, `git config --global`,
+  force-push (`--force-with-lease` hariç) → `.claude/hooks/block-dangerous.sh`
+  (PreToolUse, Bash matcher)
+- `.env`, `.git/`, `.githooks/`, `package-lock.json`, `go.sum` dosyalarına
+  Edit/Write; `test.md`'ye Write (yalnızca Edit/append izinli) →
+  `.claude/hooks/protect-files.sh` (PreToolUse, Edit|Write matcher)
+
+**Yalnızca konvansiyon (hook yok, agent'ın kurala uyması gerekiyor):**
+- Rebase edilmeden merge etmeme
+- PR'da yalnızca Squash & Merge kullanma
+- `main`'e sadece `dev`'den PR ile çıkma
+- Anlamlı, küçük commit'ler yapma
+
+**Önemli:** `.claude/hooks/*` katmanı bazı Claude Code sürümlerinde Bash tool
+çağrılarını güvenilir şekilde yakalamayabilir (bilinen sınırlama). Asıl duvar
+`.githooks/`'tur — git'in kendisi tarafından çalıştırılır, hangi araçla
+(Claude Code, Codex, OpenCode, düz terminal) commit/push yapıldığından
+bağımsızdır. `.claude/hooks/*` sadece **erken geri bildirim** sağlar, tek
+güvence değildir.
 
 ## Yardımcı İpuçları
 

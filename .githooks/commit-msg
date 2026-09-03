@@ -1,0 +1,22 @@
+#!/bin/sh
+commit_file="$1"
+first_line=$(head -n1 "$commit_file")
+
+merge_head="$(git rev-parse --git-path MERGE_HEAD 2>/dev/null)"
+if [ -n "$merge_head" ] && [ -f "$merge_head" ]; then
+  exit 0
+fi
+
+case "$first_line" in
+  Merge\ *)
+    exit 0
+    ;;
+esac
+
+pattern='^(feat|fix|docs|chore|refactor|test)(\([a-zA-Z0-9_-]+\))?: .+'
+if ! echo "$first_line" | grep -Eq "$pattern"; then
+  echo "Commit mesajı Conventional Commits'e uymuyor. Format: 'tip(scope): açıklama' — tip: feat, fix, docs, chore, refactor, test." >&2
+  exit 1
+fi
+
+exit 0
